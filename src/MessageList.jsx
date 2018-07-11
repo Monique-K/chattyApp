@@ -6,7 +6,7 @@ class MessageList extends Component {
 
   getIndividualMsgs = () => {
       const individualMsgs = this.props.messages.map((msg) => {
-       return (<Message username={msg.username} content={msg.content} key={msg.key} />)
+       return (<Message username={msg.username} content={msg.content} key={msg.id} />)
       }
       )
       return individualMsgs

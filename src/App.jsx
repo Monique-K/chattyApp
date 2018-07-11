@@ -3,19 +3,9 @@ import MessageList from "./MessageList.jsx";
 import Message from "./Message.jsx";
 import ChatBar from "./ChatBar.jsx";
 
-const generateRandomString = () => {
-  let randomArray = [];
-  let randomString = "";
-  let choices ="qwertyuioplkjhgfdsazxcvbnm1234567890"
-  for (let i = 0; i < 6; i ++) {
-    let randomchoice = Math.floor(Math.random() * 37);
-    randomArray.push(choices[randomchoice]);
-    randomString = randomArray.join("");
-  }
-  return randomString;
-};
 
 class NewMessage extends Component {
+
   render() {
     return (
       <div className="message">
@@ -24,6 +14,7 @@ class NewMessage extends Component {
      </div>
     )
   }
+
 }
 
 
@@ -33,42 +24,38 @@ class App extends Component {
     super(props)
     this.state = {
       currentUser: {name: "Bob"},
-      messages: [
-        {
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-          key: "0123"
-        },
-        {
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
-          key: "025554"
-        }
-    ]}
+      messages: []
+    }
   }
 
-//   componentDidMount() {
-//   setTimeout(() => {
-//     console.log("Simulating incoming message");
-//     const newMessage = {id: 3, username: "Michelle", content: "Hello there!", key: "25483"};
-//     const messages = this.state.messages.concat(newMessage)
+  componentDidMount() {
+    this.socket = new WebSocket(`ws://localhost:3001`);
 
-//     this.setState({messages: messages})
-//   }, 3000);
-// }
+    this.socket.onmessage = e => {
+      console.log("event", e)
+      const msg = JSON.parse(e.data);
+      console.log("message", msg)
+      this.setState(prevState => ({
+        ...prevState,
+        messages: prevState.messages.concat(msg)
+      }));
+    };
+
+  }
 
   addNewMsg = (event) => {
   if (event.key == "Enter") {
-    let oldMsgs = this.state.messages
+    // let oldMsgs = this.state.messages
     let newMsg = {
             username: "Mo",
             content: event.target.value,
-            key: generateRandomString()
           }
-  this.setState({ messages: [...oldMsgs, newMsg] })
-  event.target.value = "";
+    // this.setState({ messages: [...oldMsgs, newMsg] })
+    this.socket.send(JSON.stringify(newMsg));
+    event.target.value = "";
     }
   }
+
 
   render() {
     return (
@@ -81,7 +68,8 @@ class App extends Component {
       </div>
     );
   }
-}
+
+};
 
 
 
