@@ -23,7 +23,6 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentUser: {name: "Bob"},
       messages: []
     }
   }
@@ -32,9 +31,7 @@ class App extends Component {
     this.socket = new WebSocket(`ws://localhost:3001`);
 
     this.socket.onmessage = e => {
-      console.log("event", e)
       const msg = JSON.parse(e.data);
-      console.log("message", msg)
       this.setState(prevState => ({
         ...prevState,
         messages: prevState.messages.concat(msg)
@@ -43,19 +40,20 @@ class App extends Component {
 
   }
 
-  addNewMsg = (event) => {
-  if (event.key == "Enter") {
-    // let oldMsgs = this.state.messages
-    let newMsg = {
-            username: "Mo",
-            content: event.target.value,
+  addNewUser = (username) => {
+    let newUser = {
+            username: username,
           }
-    // this.setState({ messages: [...oldMsgs, newMsg] })
-    this.socket.send(JSON.stringify(newMsg));
-    event.target.value = "";
-    }
+    this.socket.send(JSON.stringify(newUser))
   }
 
+  addNewMsg = (msgContent, user) => {
+    let newMsg = {
+            username: user,
+            content: msgContent,
+          }
+    this.socket.send(JSON.stringify(newMsg))
+  }
 
   render() {
     return (
@@ -64,7 +62,7 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
           <MessageList messages={this.state.messages} />
-        <ChatBar onKeyPress={this.addNewMsg} currentUser={this.state.currentUser.name} />
+        <ChatBar addNewMsg={this.addNewMsg} updateUser={this.addNewUser} onKeyUp={this.setUsername} />
       </div>
     );
   }

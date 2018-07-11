@@ -15,13 +15,10 @@ class MessageList extends Component {
   render() {
     const individualMsgs = this.props.messages.map((msg) => {
        return (<Message username={msg.username} content={msg.content} />)
-      }
-      )
+    })
     return (
       <main className="messages">
-
-          {this.getIndividualMsgs()}
-
+        {this.getIndividualMsgs()}
       </main>
     )
   }
