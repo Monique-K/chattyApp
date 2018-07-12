@@ -1,7 +1,7 @@
 ChattyApp
 =====================
 
-A simple chat environment to communicate with friends.
+A real-time chat environment to communicate with friends. Log in, choose a username (or remain Anonymous), and chat away!
 
 ### Usage
 

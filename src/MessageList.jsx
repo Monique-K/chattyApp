@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import Message from './Message.jsx';
-import Notification from './notification.jsx';
 
 
 class MessageList extends Component {
 
+//Format message list into indivudual messages
   getIndividualMsgs = () => {
-
       const individualMsgs = this.props.messages.map((msg) => {
        return (<Message username={msg.username} type={msg.type} newUsername={msg.newUsername} oldUsername={msg.oldUsername} content={msg.content} key={msg.id} />)
       })
@@ -14,9 +13,6 @@ class MessageList extends Component {
     }
 
   render() {
-    const individualMsgs = this.props.messages.map((msg) => {
-       return (<Message username={msg.username} content={msg.content} />)
-    })
     return (
       <main className="messages">
         {this.getIndividualMsgs()}

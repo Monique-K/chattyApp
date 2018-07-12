@@ -35,28 +35,31 @@ class App extends Component {
       const msg = JSON.parse(e.data);
       switch(msg.type) {
       case "postMessage":
+      //This is a message from a user
         this.setState(prevState => ({
           ...prevState,
           messages: prevState.messages.concat(msg)
         }));
         break;
       case "postNotification":
+      //This is a notification that a username has changed
         this.setState(prevState => ({
           ...prevState,
           messages: prevState.messages.concat(msg)
         }));
         break;
         case "numClients":
+        //This is a notification that the number of clients has changed
           this.setState({ numClients: msg.numClients });
         break;
       default:
-        // show an error in the console if the message type is unknown
         console.error("Unknown event type", msg.type);
       };
 
     }
   }
 
+//let the server know that a username has been updated
   notifyNewUsername = (oldUsername, newUsername) => {
     let message = {
             type: "postNotification",
@@ -66,6 +69,7 @@ class App extends Component {
     this.socket.send(JSON.stringify(message))
   }
 
+//send the latest message to the server for broadcast
   addNewMsg = (msgContent, user) => {
     let newMsg = {
             type: "postMessage",
@@ -74,7 +78,6 @@ class App extends Component {
           }
     this.socket.send(JSON.stringify(newMsg))
   }
-
 
   render() {
     return (

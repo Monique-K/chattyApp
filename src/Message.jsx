@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 class Message extends Component {
 
+// Render either a notification or a user message in the message list
   renderMsgType = () => {
     if (this.props.type === "postMessage") {
         return (

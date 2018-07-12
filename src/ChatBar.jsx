@@ -11,6 +11,7 @@ class ChatBar extends Component {
     }
   }
 
+//set the new username when user presses enter on the username bar
   setUsername = (event) => {
     if (event.key == "Enter") {
       this.props.updateUser(this.state.oldUsername, event.target.value)
@@ -26,6 +27,7 @@ class ChatBar extends Component {
     this.setState({ message: event.target.value })
   }
 
+//send the latest message when user presses enter on the message bar
   addNewMsg = (event) => {
     if (event.key == "Enter") {
       this.props.addNewMsg(this.state.message, this.state.newUsername )
