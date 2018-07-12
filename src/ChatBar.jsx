@@ -6,20 +6,20 @@ class ChatBar extends Component {
     super(props)
     this.state = {
       message: "",
-      username: "Anonymous"
+      oldUsername: "Anonymous",
+      newUsername: "Anonymous"
     }
   }
 
   setUsername = (event) => {
     if (event.key == "Enter") {
-      this.setState({ username: this.state.username });
-      this.props.updateUser(this.state.username)
-
+      this.props.updateUser(this.state.oldUsername, event.target.value)
+      this.setState({ oldUsername: this.state.newUsername, newUsername: event.target.value });
     }
   }
 
   userChanged = (event) => {
-    this.setState({ username: event.target.value })
+    this.setState({ newUsername: event.target.value  })
   }
 
   messageChanged = (event) => {
@@ -28,7 +28,7 @@ class ChatBar extends Component {
 
   addNewMsg = (event) => {
     if (event.key == "Enter") {
-      this.props.addNewMsg(this.state.message, this.state.username )
+      this.props.addNewMsg(this.state.message, this.state.newUsername )
       this.setState({ message: "" });
     }
   }
@@ -36,7 +36,7 @@ class ChatBar extends Component {
   render() {
     return (
       <footer className="chatbar" id="chatbar-footer">
-        <input value={this.state.username} onKeyPress={this.setUsername} onChange={this.userChanged} className="chatbar-username" placeholder="Your username" />
+        <input value={this.state.newUsername} onKeyPress={this.setUsername} onChange={this.userChanged} className="chatbar-username" placeholder="Your username" />
         <input value={this.state.message} onKeyPress={this.addNewMsg} onChange={this.messageChanged} className="chatbar-message" placeholder="Type a message and hit ENTER" />
       </footer>
     )

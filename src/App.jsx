@@ -9,7 +9,7 @@ class NewMessage extends Component {
   render() {
     return (
       <div className="message">
-        <span className="message-username">{this.props.username}</span>
+        <span className="message-username">{this.props.newUsername}</span>
         <span className="message-content">{}</span>
      </div>
     )
@@ -23,7 +23,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      messages: []
+      messages: [],
+      numClients: 0
     }
   }
 
@@ -32,37 +33,58 @@ class App extends Component {
 
     this.socket.onmessage = e => {
       const msg = JSON.parse(e.data);
-      this.setState(prevState => ({
-        ...prevState,
-        messages: prevState.messages.concat(msg)
-      }));
-    };
+      switch(msg.type) {
+      case "postMessage":
+        this.setState(prevState => ({
+          ...prevState,
+          messages: prevState.messages.concat(msg)
+        }));
+        break;
+      case "postNotification":
+        this.setState(prevState => ({
+          ...prevState,
+          messages: prevState.messages.concat(msg)
+        }));
+        break;
+        case "numClients":
+          this.setState({ numClients: msg.numClients });
+        break;
+      default:
+        // show an error in the console if the message type is unknown
+        console.error("Unknown event type", msg.type);
+      };
 
+    }
   }
 
-  addNewUser = (username) => {
-    let newUser = {
-            username: username,
+  notifyNewUsername = (oldUsername, newUsername) => {
+    let message = {
+            type: "postNotification",
+            oldUsername: oldUsername,
+            newUsername: newUsername,
           }
-    this.socket.send(JSON.stringify(newUser))
+    this.socket.send(JSON.stringify(message))
   }
 
   addNewMsg = (msgContent, user) => {
     let newMsg = {
+            type: "postMessage",
             username: user,
             content: msgContent,
           }
     this.socket.send(JSON.stringify(newMsg))
   }
 
+
   render() {
     return (
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <div className="num-clients">{this.state.numClients} users online</div>
         </nav>
           <MessageList messages={this.state.messages} />
-        <ChatBar addNewMsg={this.addNewMsg} updateUser={this.addNewUser} onKeyUp={this.setUsername} />
+        <ChatBar addNewMsg={this.addNewMsg} updateUser={this.notifyNewUsername} onKeyUp={this.setUsername} />
       </div>
     );
   }
