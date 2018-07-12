@@ -16,6 +16,12 @@ Start the WebSockets server from the chatty_server folder by running
 
 `node server.js`
 
+### Now it's time to get chatty!
+
+Set your username in the left input space, and type your message on the right. Messages are sent immediately to all connected users.
+
+![ChattyApp in action](https://github.com/Monique-K/chattyApp/tree/master/build/chat-screen.png)
+
 ### Dependencies
 
 * React

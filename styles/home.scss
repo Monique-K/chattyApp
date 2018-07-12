@@ -1,5 +1,5 @@
 h1 {
-  color: tomato;
+  color: #80b272;
 }
 
 body {
@@ -11,7 +11,7 @@ body {
     }
 
     .chatbar {
-      background: tomato;
+      background: #80b272;
       border-top: 1px solid black;
       bottom: 0;
       display: flex;
@@ -66,7 +66,7 @@ body {
     }
 
     .navbar {
-      background: tomato;
+      background: #80b272;
       border-bottom: 1px solid black;
       height: 60px;
       left: 0;
@@ -74,14 +74,16 @@ body {
       position: fixed;
       right: 0;
       top: 0;
+      background: linear-gradient(to right, #44e018, #80b272);
     }
 
     .navbar-brand {
       color: inherit;
       display: block;
       float: left;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      font-size: 28px;
+      font-size: 35px;
       height: 60px;
       line-height: 60px;
       padding: 0 10px;
